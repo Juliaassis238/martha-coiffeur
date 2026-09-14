@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chimara Emília — Nutricionista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF8F5;
+    --paper-2:#F4EDEA;
+    --plum:#3B1F30;
+    --plum-2:#4E2A41;
+    --rose:#C98B90;
+    --rose-soft:#E7C7C4;
+    --sage:#828C74;
+    --ink:#231620;
+    --line:rgba(59,31,48,0.15);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Manrope', sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--rose); color:#fff; }
+  img{display:block; max-width:100%;}
+  a{color:inherit; text-decoration:none;}
+  h1,h2,h3,h4{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:500;
+    line-height:1.06;
+  }
+  .eyebrow{
+    font-size:11px; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--rose); font-weight:600;
+  }
+  .wrap{ max-width:1300px; margin:0 auto; padding:0 6vw; }
+  section{ position:relative; }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .9s cubic-bezier(.16,.8,.3,1), transform 1s cubic-bezier(.16,.8,.3,1); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  .reveal-1{transition-delay:.08s;} .reveal-2{transition-delay:.18s;} .reveal-3{transition-delay:.28s;} .reveal-4{transition-delay:.38s;}
+
+  /* underline draw-in for headings marked .ink */
+  .ink{ position:relative; display:inline-block; }
+  .ink::after{
+    content:''; position:absolute; left:0; right:100%; bottom:-6px; height:2px;
+    background:var(--rose);
+    transition:right 1s cubic-bezier(.16,.8,.3,1) .3s;
+  }
+  .reveal.in .ink::after{ right:0; }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:30px 6vw;
+    transition:background .5s ease, padding .5s ease, box-shadow .5s ease;
+  }
+  header.solid{ background:rgba(251,248,245,0.9); backdrop-filter:blur(10px); padding:18px 6vw; box-shadow:0 1px 0 var(--line); }
+  .brandmark{ font-family:'Cormorant Garamond', serif; font-size:22px; letter-spacing:.01em; color:#fff; transition:color .5s ease; }
+  header.solid .brandmark{ color:var(--plum); }
+  .brandmark em{ color:var(--rose-soft); font-style:italic; }
+  header.solid .brandmark em{ color:var(--rose); }
+  nav{ display:flex; gap:40px; }
+  nav a{ font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#fff; opacity:.9; transition:opacity .3s, color .5s; }
+  header.solid nav a{ color:var(--plum); }
+  nav a:hover{ opacity:1; color:var(--rose-soft); }
+  header.solid nav a:hover{ color:var(--rose); }
+
+  /* ---------- HERO split ---------- */
+  .hero{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    background:var(--plum);
+  }
+  .hero-text{
+    display:flex; flex-direction:column; justify-content:center;
+    padding:0 5vw; color:var(--paper);
+    position:relative; z-index:2;
+  }
+  .hero-text .eyebrow{ margin-bottom:24px; }
+  .hero-text h1{
+    font-size:clamp(40px,4.6vw,72px);
+    color:var(--paper);
+    max-width:11ch;
+  }
+  .hero-text h1 em{ font-style:italic; color:var(--rose-soft); }
+  .hero-text p{
+    margin-top:26px; max-width:40ch; font-weight:300; font-size:16px; line-height:1.8;
+    color:rgba(251,248,245,0.78);
+  }
+  .hero-cta{
+    margin-top:44px; display:flex; gap:18px; flex-wrap:wrap; align-items:center;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:16px 32px; font-size:12.5px; letter-spacing:.16em; text-transform:uppercase;
+    border:1px solid var(--rose-soft); color:var(--paper);
+    transition:background .4s ease, color .4s ease, border-color .4s ease;
+  }
+  .btn:hover{ background:var(--rose-soft); color:var(--plum); border-color:var(--rose-soft); }
+  .btn-ghost{ border-color:rgba(251,248,245,0.35); color:rgba(251,248,245,0.85); }
+  .btn-ghost:hover{ background:transparent; border-color:var(--paper); color:var(--paper); }
+  .hero-crn{ margin-top:64px; font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:rgba(251,248,245,0.5); }
+
+  .hero-media{ position:relative; overflow:hidden; }
+  .hero-media .blob{
+    position:absolute; inset:6% 6% 0 0;
+    clip-path:path('M60,0 C300,-10 420,90 400,260 C380,440 260,520 120,500 C-10,480 -30,300 10,150 C30,70 20,10 60,0 Z');
+    overflow:hidden; background:var(--plum-2);
+  }
+  .hero-media img{
+    width:100%; height:100%; object-fit:cover; object-position:60% 22%;
+    transform:scale(1.05);
+  }
+  .hero-media::before{
+    content:'';
+    position:absolute; left:-2%; top:14%; width:120px; height:120px;
+    border:1px solid rgba(251,248,245,0.4); border-radius:50%;
+    z-index:2;
+  }
+
+  .scroll-cue{
+    position:absolute; left:5vw; bottom:40px; z-index:3;
+    display:flex; align-items:center; gap:14px; color:rgba(251,248,245,.65);
+  }
+  .scroll-cue .dot{ width:8px; height:8px; border-radius:50%; background:var(--rose-soft); animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ transform:scale(1); opacity:1;} 50%{ transform:scale(1.6); opacity:.4;} }
+  .scroll-cue span{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; }
+
+  /* ---------- SOBRE ---------- */
+  .sobre{ padding:170px 0 130px; }
+  .sobre .grid{ display:grid; grid-template-columns:0.7fr 1.3fr; gap:8vw; }
+  .sobre h2{ font-size:clamp(32px,4vw,52px); max-width:9ch; }
+  .sobre-copy{ font-size:19px; line-height:1.85; font-weight:300; color:#332232; }
+  .sobre-copy p{ margin-bottom:24px; }
+  .sobre-copy .drop::first-letter{
+    font-family:'Cormorant Garamond', serif; font-size:74px; font-weight:500;
+    float:left; line-height:0.8; padding:10px 12px 0 0; color:var(--plum);
+  }
+
+  /* ---------- AREAS offset cards ---------- */
+  .areas{ padding:130px 0; background:var(--paper-2); }
+  .areas-head{ margin-bottom:80px; max-width:640px; }
+  .areas-head h2{ font-size:clamp(32px,4vw,52px); }
+  .areas-head p{ margin-top:20px; font-weight:300; font-size:16px; line-height:1.8; color:#4A3548; }
+  .area-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:26px; }
+  .area-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    padding:44px 30px;
+    transition:transform .5s cubic-bezier(.16,.8,.3,1), border-color .5s ease, box-shadow .5s ease;
+  }
+  .area-card:nth-child(2){ transform:translateY(34px); }
+  .area-card:nth-child(4){ transform:translateY(34px); }
+  .area-card:hover{ border-color:var(--rose); box-shadow:0 24px 50px -30px rgba(59,31,48,0.35); transform:translateY(8px); }
+  .area-card:nth-child(2):hover, .area-card:nth-child(4):hover{ transform:translateY(24px); }
+  .area-card .idx{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:14px; color:var(--rose); }
+  .area-card h3{ font-size:25px; margin-top:16px; margin-bottom:14px; color:var(--plum); font-weight:500; }
+  .area-card p{ font-size:14.5px; line-height:1.75; font-weight:300; color:#5A4658; }
+
+  /* ---------- PARA QUEM ---------- */
+  .paraquem{ padding:150px 0; }
+  .paraquem .grid{ display:grid; grid-template-columns:0.8fr 1.2fr; gap:8vw; align-items:start; }
+  .paraquem h2{ font-size:clamp(32px,3.8vw,50px); max-width:9ch; }
+  .check-list{ list-style:none; }
+  .check-list li{
+    display:flex; gap:22px; align-items:flex-start;
+    padding:24px 0; border-bottom:1px solid var(--line);
+    font-size:17.5px; line-height:1.6; font-weight:300;
+  }
+  .check-list li:first-child{ padding-top:0; }
+  .tick{
+    flex-shrink:0; width:20px; height:20px; margin-top:3px; position:relative;
+  }
+  .tick::before, .tick::after{ content:''; position:absolute; background:var(--rose); }
+  .tick::before{ width:2px; height:9px; left:5px; top:8px; transform:rotate(45deg); }
+  .tick::after{ width:2px; height:15px; left:11px; top:1px; transform:rotate(-45deg); }
+
+  /* ---------- QUOTE plum band ---------- */
+  .quote-band{ background:var(--plum); color:var(--paper); padding:180px 0; text-align:center; position:relative; overflow:hidden; }
+  .quote-band .ring{
+    position:absolute; width:520px; height:520px; border:1px solid rgba(251,248,245,0.1); border-radius:50%;
+    top:-160px; left:50%; transform:translateX(-50%);
+  }
+  .quote-band blockquote{
+    max-width:780px; margin:0 auto; font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:400;
+    font-size:clamp(26px,3.3vw,42px); line-height:1.5; position:relative; z-index:1;
+  }
+  .quote-band cite{ display:block; margin-top:30px; font-style:normal; font-size:11.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--rose-soft); }
+
+  /* ---------- ATENDIMENTO ---------- */
+  .atendimento{ padding:150px 0; }
+  .atendimento-top{ display:grid; grid-template-columns:1fr 1fr; gap:8vw; margin-bottom:70px; align-items:end; }
+  .atendimento-top h2{ font-size:clamp(32px,3.8vw,50px); }
+  .atendimento-top p{ font-weight:300; font-size:16px; line-height:1.8; color:#4A3548; }
+  .contact-mini{ display:flex; gap:50px; margin-top:34px; flex-wrap:wrap; }
+  .contact-mini .eyebrow{ display:block; margin-bottom:8px; }
+  .contact-mini p{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:19px; color:var(--plum); }
+
+  .photo-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    grid-template-rows:280px 280px;
+    gap:20px;
+  }
+  .photo-grid figure{ position:relative; overflow:hidden; background:var(--plum); }
+  .photo-grid figure:first-child{ grid-row:1 / 3; }
+  .photo-grid img{ width:100%; height:100%; object-fit:cover; transition:transform 1s cubic-bezier(.16,.8,.3,1); }
+  .photo-grid figure:hover img{ transform:scale(1.06); }
+  .photo-grid figcaption{
+    position:absolute; left:0; bottom:0; right:0; padding:22px 24px;
+    background:linear-gradient(0deg, rgba(35,22,32,.65), transparent);
+    color:#fff; font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+  }
+
+  /* floating contact card */
+  .floating-card{
+    position:fixed; right:26px; bottom:26px; z-index:90;
+    background:var(--plum); color:var(--paper);
+    padding:20px 24px; display:flex; align-items:center; gap:16px;
+    transform:translateY(140px); opacity:0;
+    transition:transform .6s cubic-bezier(.16,.8,.3,1), opacity .6s ease;
+    box-shadow:0 20px 50px -20px rgba(59,31,48,0.5);
+  }
+  .floating-card.show{ transform:translateY(0); opacity:1; }
+  .floating-card .fc-text{ font-size:12px; line-height:1.4; }
+  .floating-card .fc-text strong{ display:block; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:16px; font-weight:500; }
+  .floating-card a{ background:var(--rose); color:var(--plum); padding:10px 18px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; white-space:nowrap; }
+
+  /* ---------- CTA FINAL ---------- */
+  .cta-final{
+    background:linear-gradient(120deg, var(--rose-soft), var(--paper-2) 60%);
+    padding:170px 0 130px; text-align:center;
+  }
+  .cta-final .eyebrow{ color:var(--plum); }
+  .cta-final h2{ font-size:clamp(36px,5.6vw,74px); max-width:16ch; margin:22px auto 0; color:var(--plum); }
+  .cta-final h2 em{ color:#fff; -webkit-text-stroke:1.5px var(--plum); font-style:italic; }
+  .cta-final .btn{ margin-top:48px; border-color:var(--plum); color:var(--plum); }
+  .cta-final .btn:hover{ background:var(--plum); color:var(--paper); }
+
+  footer{ background:var(--plum); color:rgba(251,248,245,.55); padding:56px 0 40px; }
+  .foot-grid{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:18px; font-size:12px; }
+  .foot-grid .brandmark{ color:var(--paper); font-size:18px; }
+  .foot-links{ display:flex; gap:28px; }
+  .foot-links a{ opacity:.8; transition:opacity .3s; }
+  .foot-links a:hover{ opacity:1; color:var(--rose-soft); }
+
+  @media (max-width: 900px){
+    nav{ display:none; }
+    .hero{ grid-template-columns:1fr; }
+    .hero-media{ height:56vh; order:-1; }
+    .hero-text{ padding:70px 6vw 60px; }
+    .sobre .grid, .paraquem .grid, .atendimento-top{ grid-template-columns:1fr; gap:40px; }
+    .area-grid{ grid-template-columns:1fr 1fr; }
+    .area-card:nth-child(2), .area-card:nth-child(4){ transform:none; }
+    .photo-grid{ grid-template-columns:1fr; grid-template-rows:auto; }
+    .photo-grid figure:first-child{ grid-row:auto; height:280px; }
+    .floating-card{ left:16px; right:16px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+    html{ scroll-behavior:auto; }
+  }
+
+  /* ---------- refinamento editorial e performance ---------- */
+  .hero-picture{display:block; width:100%; height:100%;}
+  .hero-media .hero-picture img{display:block; width:100%; height:100%;}
+  .nav-toggle{display:none; width:42px; height:42px; padding:10px; border:1px solid currentColor; background:transparent; color:inherit; flex-direction:column; justify-content:center; gap:5px;}
+  .nav-toggle span{display:block; width:100%; height:1px; background:currentColor; transition:transform .2s ease, opacity .2s ease;}
+  header.nav-open .nav-toggle span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+  header.nav-open .nav-toggle span:nth-child(2){opacity:0;}
+  header.nav-open .nav-toggle span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+  .hero-media img{filter:none;}
+  @media (max-width: 900px){
+    header{padding:18px 6vw;}
+    .nav-toggle{display:flex;}
+    header nav{display:none;}
+    header.nav-open nav{display:flex; position:absolute; top:100%; left:6vw; right:6vw; padding:8px 20px; flex-direction:column; gap:0; background:var(--nav-panel); color:var(--nav-text); box-shadow:0 18px 36px -28px rgba(25,20,24,.55);}
+    header.nav-open nav a{color:var(--nav-text); padding:15px 0; border-bottom:1px solid var(--line);}
+    header.nav-open nav a:last-child{border-bottom:0;}
+    .hero-picture img{object-position:center center;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .nav-toggle span{transition:none;}
+  }
+
+  :root{
+    --nav-panel:#FBF8F5;
+    --nav-text:#3B1F30;
+  }
+  @media (max-width: 900px){
+    .hero{min-height:100svh;}
+    .hero-media{height:54svh; min-height:360px;}
+    .hero-text{padding:64px 7vw 58px;}
+    .hero-text h1{max-width:12ch;}
+    .hero-text p{font-size:15px; line-height:1.7;}
+    .hero-cta{margin-top:32px; gap:12px;}
+    .hero-crn{margin-top:38px;}
+    .area-grid{gap:14px;}
+    .area-card{padding:30px 20px;}
+    .photo-grid{gap:12px;}
+  }
+
+  /* ---------- assinatura em destaque sob a foto ---------- */
+  header{justify-content:flex-end;}
+  header .brandmark{display:none;}
+  .hero-media{display:flex; flex-direction:column; align-items:flex-start; justify-content:center; padding:0 6% 0 0;}
+  .hero-media .blob{position:relative; inset:auto; width:100%; max-width:680px; height:auto; aspect-ratio:4 / 5; clip-path:none; border-radius:180px 180px 0 0; overflow:hidden;}
+  .hero-signature{padding:18px 0 0; margin-left:clamp(16px,4vw,56px); color:var(--plum);}
+  .hero-signature-name{font-family:'Cormorant Garamond', serif; font-size:clamp(40px,4.5vw,68px); line-height:.92; letter-spacing:-.025em; color:var(--paper);}
+  .hero-signature-name em{font-style:italic; color:var(--rose-soft);}
+  .hero-signature-role{margin-top:10px; font-size:12px; letter-spacing:.34em; text-transform:uppercase; font-weight:700; color:var(--rose-soft);}
+  @media (max-width: 900px){
+    .hero-media{height:auto; min-height:0; padding:28px 7vw 0;}
+    .hero-media .blob{width:100%; height:auto; aspect-ratio:4 / 5; clip-path:none; border-radius:104px 104px 0 0;}
+    .hero-media .hero-picture, .hero-media .hero-picture img{height:100%;}
+    .hero-signature{margin-left:8px; padding-top:18px;}
+    .hero-signature-name{font-size:clamp(44px,12vw,72px);}
+    .hero-signature-role{font-size:11px; letter-spacing:.28em;}
+  }
+  @media (min-width: 901px){
+    .hero{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);}
+    .hero-media .hero-picture img{object-fit:cover; object-position:center 42%;}
+    .hero-signature{margin-left:clamp(20px,3vw,48px);}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav>
+    <a href="#sobre">Sobre</a>
+    <a href="#areas">Áreas</a>
+    <a href="#paraquem">Para quem</a>
+    <a href="#atendimento">Atendimento</a>
+    <a href="#contato">Contato</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <span class="eyebrow">Nutrição Oncológica · Emagrecimento · Nutrição Clínica</span>
+    <h1>Cuidado nutricional com <em>escuta</em> e estratégia</h1>
+    <p>Um acompanhamento acolhedor, individualizado e possível de aplicar no dia a dia — respeitando o seu momento, a sua rotina e os seus objetivos.</p>
+    <div class="hero-cta">
+      <a class="btn" href="https://wa.me/5511996170623" target="_blank" rel="noopener">Agendar consulta</a>
+      <a class="btn btn-ghost" href="#sobre">Conhecer o trabalho</a>
+    </div>
+    <div class="hero-crn">CRN-SP 78744 — Osasco, São Paulo</div>
+  </div>
+  <div class="hero-media">
+    <div class="blob"><picture class="hero-picture">
+      <source media="(max-width: 900px)" srcset="assets/hero-mobile.webp">
+      <img id="heroImg" src="assets/hero-mobile.webp" srcset="assets/hero-mobile.webp 1080w" sizes="(max-width: 900px) 86vw, 42vw" width="1080" height="1920" alt="Chimara Emília, nutricionista" decoding="async" loading="eager" fetchpriority="high">
+    </picture></div>
+    <div class="hero-signature" aria-label="Identidade profissional">
+      <p class="hero-signature-name">Chimara <em>Emília</em></p>
+      <p class="hero-signature-role">Nutricionista</p>
+    </div>
+  </div>
+  <div class="scroll-cue"><div class="dot"></div><span>Role a página</span></div>
+</section>
+
+<section class="sobre" id="sobre">
+  <div class="wrap grid">
+    <div class="reveal">
+      <span class="eyebrow">Sobre mim</span>
+      <h2 class="ink">Uma relação mais leve com a comida</h2>
+    </div>
+    <div class="sobre-copy">
+      <p class="drop reveal reveal-1">Sou Chimara Emília, nutricionista, e acredito que a alimentação deve ser uma aliada no cuidado com a saúde, a rotina e a qualidade de vida. Meu trabalho é oferecer um acompanhamento nutricional acolhedor, individualizado e possível de aplicar no dia a dia.</p>
+      <p class="reveal reveal-2">Cada pessoa tem uma história, uma rotina, preferências e necessidades diferentes. Por isso, minhas orientações são construídas de forma personalizada, respeitando o momento e os objetivos de cada paciente — sem restrições extremas e sem terrorismo nutricional.</p>
+      <p class="reveal reveal-3">Em consulta, conversamos sobre sua rotina, histórico de saúde, alimentação, exames, sintomas, objetivos e principais dificuldades. A nutrição não precisa ser complicada. Ela precisa fazer sentido para a sua vida.</p>
+    </div>
+  </div>
+</section>
+
+<section class="areas" id="areas">
+  <div class="wrap">
+    <div class="areas-head reveal">
+      <span class="eyebrow">Áreas de atendimento</span>
+      <h2 class="ink" style="margin-top:16px;">Cuidado especializado, para cada necessidade</h2>
+      <p>Quatro frentes de trabalho, sempre adaptadas à fase e à realidade de quem atendo.</p>
+    </div>
+    <div class="area-grid">
+      <div class="area-card reveal"><span class="idx">Oncológica</span><h3>Nutrição Oncológica</h3><p>Acompanhamento individualizado para pacientes em tratamento oncológico, com orientações adaptadas a cada fase.</p></div>
+      <div class="area-card reveal reveal-1"><span class="idx">Emagrecimento</span><h3>Emagrecimento Saudável</h3><p>Estratégias para emagrecer com equilíbrio, consciência e sustentabilidade, sem dietas restritivas.</p></div>
+      <div class="area-card reveal reveal-2"><span class="idx">Clínica</span><h3>Nutrição Clínica</h3><p>Cuidado nutricional em condições como diabetes, hipertensão e alterações nutricionais.</p></div>
+      <div class="area-card reveal reveal-3"><span class="idx">On-line</span><h3>Consulta On-line</h3><p>Atendimento por videochamada para quem busca mais praticidade e flexibilidade.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="paraquem" id="paraquem">
+  <div class="wrap grid">
+    <div class="reveal">
+      <span class="eyebrow">Para quem é</span>
+      <h2 class="ink">Este atendimento é para você</h2>
+    </div>
+    <ul class="check-list">
+      <li class="reveal"><span class="tick"></span>Para pessoas que desejam cuidar melhor da alimentação.</li>
+      <li class="reveal reveal-1"><span class="tick"></span>Para quem busca emagrecer com saúde e sem extremismos.</li>
+      <li class="reveal reveal-2"><span class="tick"></span>Para pacientes em tratamento oncológico que precisam de suporte nutricional.</li>
+      <li class="reveal reveal-3"><span class="tick"></span>Para quem precisa de acompanhamento em diabetes, hipertensão ou outras necessidades clínicas.</li>
+      <li class="reveal reveal-4"><span class="tick"></span>Para quem quer uma relação mais leve, consciente e possível com a comida.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="quote-band">
+  <div class="ring"></div>
+  <div class="wrap">
+    <blockquote class="reveal">“Cuidar da alimentação não deve gerar culpa ou medo. Deve gerar mais autonomia, segurança e confiança para fazer boas escolhas todos os dias.”</blockquote>
+    <cite class="reveal reveal-1">Minha forma de cuidar</cite>
+  </div>
+</section>
+
+<section class="atendimento" id="atendimento">
+  <div class="wrap">
+    <div class="atendimento-top">
+      <div class="reveal">
+        <span class="eyebrow">Atendimento presencial e on-line</span>
+        <h2 class="ink" style="margin-top:16px;">Um espaço pensado para acolher</h2>
+      </div>
+      <div class="reveal reveal-1">
+        <p>Atendo presencialmente em Osasco, São Paulo, e também realizo consultas on-line para quem busca mais praticidade e flexibilidade.</p>
+        <div class="contact-mini">
+          <div><span class="eyebrow">WhatsApp</span><p>+55 11 99617-0623</p></div>
+          <div><span class="eyebrow">Registro</span><p>CRN-SP 78744</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="photo-grid reveal">
+      <figure><img src="assets/image-02.webp" alt="Consultório com vista da cidade" srcset="assets/image-02-sm.webp 720w, assets/image-02.webp 1600w" sizes="(max-width: 720px) 100vw, 1600px" decoding="async" loading="lazy" width="1600" height="1600"><figcaption>Vista da cidade de São Paulo</figcaption></figure>
+      <figure><img src="assets/image-03.webp" alt="Sala de atendimento" srcset="assets/image-03-sm.webp 720w, assets/image-03.webp 1600w" sizes="(max-width: 720px) 100vw, 1600px" decoding="async" loading="lazy" width="1600" height="1600"><figcaption>Sala de atendimento</figcaption></figure>
+      <figure><img src="assets/image-04.webp" alt="Recepção do edifício" srcset="assets/image-04-sm.webp 720w, assets/image-04.webp 1600w" sizes="(max-width: 720px) 100vw, 1600px" decoding="async" loading="lazy" width="1600" height="1600"><figcaption>Osasco Prime Center</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final" id="contato">
+  <div class="wrap">
+    <span class="eyebrow">Agende sua consulta</span>
+    <h2>Vamos cuidar da sua alimentação com <em>leveza</em> e acolhimento?</h2>
+    <a class="btn" href="https://wa.me/5511996170623" target="_blank" rel="noopener">Falar no WhatsApp</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div class="brandmark">Chimara Emília <em>Nutricionista</em></div>
+    <div class="foot-links">
+      <a href="#sobre">Sobre</a>
+      <a href="#areas">Áreas</a>
+      <a href="#atendimento">Atendimento</a>
+      <a href="https://wa.me/5511996170623" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <div>CRN-SP 78744 · Osasco, São Paulo</div>
+  </div>
+</footer>
+
+<div class="floating-card" id="floatCard">
+  <div class="fc-text">Atende presencial e on-line<strong>Chimara Emília</strong></div>
+  <a href="https://wa.me/5511996170623" target="_blank" rel="noopener">WhatsApp</a>
+</div>
+
+<script>
+  const header = document.getElementById('siteHeader');
+  const onScroll = () => {
+    if (window.scrollY > 60) header.classList.add('solid'); else header.classList.remove('solid');
+    const fc = document.getElementById('floatCard');
+    if (window.scrollY > window.innerHeight * 0.9) fc.classList.add('show'); else fc.classList.remove('show');
+  };
+  document.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion) {
+    revealEls.forEach(el => el.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if (entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); }
+      });
+    }, { threshold:0.14, rootMargin:'0px 0px -60px 0px' });
+    revealEls.forEach(el=>io.observe(el));
+  }
+
+  const navToggle = document.querySelector('.nav-toggle');
+  const siteHeader = document.getElementById('siteHeader');
+  if (navToggle && siteHeader){
+    navToggle.addEventListener('click', ()=>{
+      const isOpen = siteHeader.classList.toggle('nav-open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      navToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+    });
+    siteHeader.querySelectorAll('nav a').forEach(link=>link.addEventListener('click', ()=>{
+      siteHeader.classList.remove('nav-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', 'Abrir menu');
+    }));
+  }
+
+</script>
+</body>
+</html>
