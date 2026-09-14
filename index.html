@@ -119,8 +119,8 @@
     overflow:hidden; background:var(--plum-2);
   }
   .hero-media img{
-    width:100%; height:100%; object-fit:cover; object-position:60% 22%;
-    transform:scale(1.05);
+    width:100%; height:100%; object-fit:cover; object-position:center center;
+    transform:none;
   }
   .hero-media::before{
     content:'';
@@ -209,12 +209,12 @@
 
   .photo-grid{
     display:grid;
-    grid-template-columns:1.3fr 1fr;
-    grid-template-rows:280px 280px;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:minmax(380px, 520px);
     gap:20px;
   }
   .photo-grid figure{ position:relative; overflow:hidden; background:var(--plum); }
-  .photo-grid figure:first-child{ grid-row:1 / 3; }
+  .photo-grid figure:first-child{ grid-row:auto; }
   .photo-grid img{ width:100%; height:100%; object-fit:cover; transition:transform 1s cubic-bezier(.16,.8,.3,1); }
   .photo-grid figure:hover img{ transform:scale(1.06); }
   .photo-grid figcaption{
@@ -265,6 +265,7 @@
     .area-card:nth-child(2), .area-card:nth-child(4){ transform:none; }
     .photo-grid{ grid-template-columns:1fr; grid-template-rows:auto; }
     .photo-grid figure:first-child{ grid-row:auto; height:280px; }
+    .photo-grid figure:not(:first-child){ height:280px; }
     .floating-card{ left:16px; right:16px; }
   }
   @media (prefers-reduced-motion: reduce){
@@ -330,7 +331,7 @@
   }
   @media (min-width: 901px){
     .hero{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);}
-    .hero-media .hero-picture img{object-fit:cover; object-position:center 42%;}
+    .hero-media .hero-picture img{object-fit:cover; object-position:center center;}
     .hero-signature{margin-left:clamp(20px,3vw,48px);}
   }
 </style>
@@ -445,9 +446,8 @@
       </div>
     </div>
     <div class="photo-grid reveal">
-      <figure><img src="assets/image-02.webp" alt="Cabelos para alongamento e mega hair" srcset="assets/image-02-sm.webp 720w, assets/image-02.webp 1600w" sizes="(max-width: 720px) 100vw, 1600px" decoding="async" loading="lazy" width="1600" height="1600"><figcaption>Alongamento com cabelo natural</figcaption></figure>
-      <figure><img src="assets/image-03.webp" alt="Detalhes de cabelos e cuidados de beleza" srcset="assets/image-03-sm.webp 720w, assets/image-03.webp 1600w" sizes="(max-width: 720px) 100vw, 1600px" decoding="async" loading="lazy" width="1600" height="1600"><figcaption>Cuidado em cada detalhe</figcaption></figure>
-      <figure><img src="assets/image-04.webp" alt="Ambiente de atendimento do salão" srcset="assets/image-04-sm.webp 720w, assets/image-04.webp 1600w" sizes="(max-width: 720px) 100vw, 1600px" decoding="async" loading="lazy" width="1600" height="1600"><figcaption>Martha Coiffeur — Araxá</figcaption></figure>
+      <figure><img src="assets/martha-galeria-1.png" alt="Martha Coiffeur apresentando cabelos e produtos no salão" sizes="(max-width: 720px) 100vw, 1600px" decoding="async" loading="lazy" width="1161" height="1354"><figcaption>Produtos e alongamentos</figcaption></figure>
+      <figure><img src="assets/martha-galeria-2.png" alt="Martha Coiffeur no ambiente do salão" sizes="(max-width: 720px) 100vw, 1600px" decoding="async" loading="lazy" width="1162" height="1354"><figcaption>Um espaço para cuidar de você</figcaption></figure>
     </div>
   </div>
 </section>
